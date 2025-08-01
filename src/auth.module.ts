@@ -35,7 +35,7 @@ import { Permission } from './entities/permission.entity';
       port: 5432,
       username: 'postgres',
       password: 'postgres',
-      database: 'postgres',
+      database: 'rifas',
       entities: [OpsTeam],  // 🔹 Asegúrate de importar tus entidades
       synchronize: true, // ⚠️ Solo para desarrollo, en producción usa migrations
       autoLoadEntities: true,
