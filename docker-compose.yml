@@ -14,7 +14,7 @@ services:
     ports:
       - "5434:5432"
     networks:
-      - rifas-network
+      - shared-network  # 👈 CAMBIADO
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 10s
@@ -34,7 +34,7 @@ services:
       db:
         condition: service_healthy
     networks:
-      - rifas-network
+      - shared-network  # 👈 CAMBIADO
 
   backend-rifas:
     build:
@@ -53,7 +53,7 @@ services:
       db:
         condition: service_healthy
     networks:
-      - rifas-network
+      - shared-network  # 👈 CAMBIADO
 
   admin-rfs:
     image: nginx:alpine
@@ -65,7 +65,7 @@ services:
     ports:
       - "8083:80"
     networks:
-      - rifas-network
+      - shared-network  # 👈 CAMBIADO
 
   rfs:
     image: nginx:alpine
@@ -76,24 +76,7 @@ services:
     ports:
       - "8081:80"
     networks:
-      - rifas-network
-
-  caddy:
-    image: caddy:alpine
-    container_name: caddy-rifas
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ../caddy/Caddyfile:/etc/caddy/Caddyfile
-      - ../caddy/data:/data
-      - ../caddy/config:/config
-    depends_on:
-      - backend-rifas
-    networks:
-      - rifas-network
-
+      - shared-network  # 👈 CAMBIADO
 
   auth-r:
     build:
@@ -107,11 +90,12 @@ services:
       - PORT=4003
       - DATABASE_URL=postgresql://postgres:postgres@postgres-rifas:5432/rifas
     networks:
-      - rifas-network
+      - shared-network  # 👈 CAMBIADO
     depends_on:
       - db
 
+# ❌ Eliminamos caddy-rifas porque ya estás usando uno global
 
 networks:
-  rifas-network:
-    driver: bridge
+  shared-network:   # 👈 USAMOS red compartida
+    external: true
