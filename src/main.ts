@@ -7,7 +7,7 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: {
       host: '0.0.0.0', // 🔥 IMPORTANTE: No usar localhost
-      port: 4001,
+      port: 4003,
     },
   });
 
