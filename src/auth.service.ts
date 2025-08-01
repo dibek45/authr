@@ -22,7 +22,6 @@ export class AuthService {
     console.log(user2)
     const user = await this.opsTeamRepository.findOne({ 
       where: { email }, 
-      relations: ['role', 'role.permissions'], 
     }); 
 
     if (!user) {
@@ -38,9 +37,7 @@ export class AuthService {
 
     console.log('✅ Usuario autenticado:', user.email);
 
-    // Obtener permisos del rol
-
-    // Genera un token JWT con rol y permisos
+    
     return {
       access_token: this.jwtService.sign({ 
         id: user.id, 
@@ -53,6 +50,6 @@ export class AuthService {
   }
 
   async findUserByEmail(email: string): Promise<OpsTeam | null> {
-    return this.opsTeamRepository.findOne({ where: { email }, relations: ['role', 'role.permissions'] });
+    return this.opsTeamRepository.findOne({ where: { email }});
   }
 }
