@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:16
     restart: always
-    container_name: postgres
+    container_name: postgres-rifas
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
@@ -12,9 +12,9 @@ services:
     volumes:
       - ./pgdata-rifas:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5434:5432"
     networks:
-      - shared-network
+      - rifas-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 10s
@@ -23,7 +23,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: nest-pgadmin4
+    container_name: pgadmin-rifas
     restart: always
     environment:
       - PGADMIN_DEFAULT_EMAIL=david-6393@hotmail.com
@@ -34,7 +34,7 @@ services:
       db:
         condition: service_healthy
     networks:
-      - shared-network
+      - rifas-network
 
   backend-rifas:
     build:
@@ -44,7 +44,7 @@ services:
     restart: always
     environment:
       - PORT=3000
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/rifas
+      - DATABASE_URL=postgresql://postgres:postgres@postgres-rifas:5432/rifas
     volumes:
       - ../backend-rifas/uploads:/app/uploads
     ports:
@@ -53,7 +53,7 @@ services:
       db:
         condition: service_healthy
     networks:
-      - shared-network
+      - rifas-network
 
   admin-rfs:
     image: nginx:alpine
@@ -65,7 +65,7 @@ services:
     ports:
       - "8083:80"
     networks:
-      - shared-network
+      - rifas-network
 
   rfs:
     image: nginx:alpine
@@ -76,11 +76,11 @@ services:
     ports:
       - "8081:80"
     networks:
-      - shared-network
+      - rifas-network
 
   caddy:
     image: caddy:alpine
-    container_name: caddy
+    container_name: caddy-rifas
     restart: unless-stopped
     ports:
       - "80:80"
@@ -92,7 +92,7 @@ services:
     depends_on:
       - backend-rifas
     networks:
-      - shared-network
+      - rifas-network
 
 
   auth-r:
@@ -105,13 +105,13 @@ services:
       - "4003:4003"
     environment:
       - PORT=4003
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/rifas
+      - DATABASE_URL=postgresql://postgres:postgres@postgres-rifas:5432/rifas
     networks:
-      - shared-network
+      - rifas-network
     depends_on:
       - db
 
 
 networks:
-  shared-network:
+  rifas-network:
     driver: bridge

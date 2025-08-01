@@ -30,8 +30,8 @@ import { OpsTeam } from './entities/ops-team.entity';
     
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db',  // 🔹 Nombre del servicio en Docker Compose
-      port: 5432,
+      host: 'postgres-rifas', // 👈 CAMBIA esto (antes decía 'db')
+      port: 5434,
       username: 'postgres',
       password: 'postgres',
       database: 'rifas',
