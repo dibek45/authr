@@ -45,17 +45,17 @@ services:
     container_name: caddy-rifas
     restart: unless-stopped
     ports:
-      - "8085:80"
-      - "4443:443"
+        - "8085:80"
+        - "4443:443"
     volumes:
-      volumes:
         - ../caddy/Caddyfile:/etc/caddy/Caddyfile
         - ../caddy/data:/data
         - ../caddy/config:/config
     depends_on:
-      - backend-rifas
+        - backend-rifas
     networks:
-      - rifas-network
+        - rifas-network
+
 
 networks:
   rifas-network:
