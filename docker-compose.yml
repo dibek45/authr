@@ -30,7 +30,6 @@ services:
     environment:
       - PORT=3000
       - DATABASE_URL=postgresql://postgres:postgres@db-rifas:5432/rifas
-
     ports:
       - "3010:3000"
     depends_on:
@@ -49,9 +48,9 @@ services:
       - "8085:80"
       - "4443:443"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./caddy-data:/data
-      - ./caddy-config:/config
+      - ../caddy/Caddyfile:/etc/caddy/Caddyfile  # 👈 CAMBIADO
+      - ../caddy/data:/data
+      - ../caddy/config:/config
     depends_on:
       - backend-rifas
     networks:
