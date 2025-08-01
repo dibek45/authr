@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   auth-r:
     build:
@@ -10,8 +12,6 @@ services:
     environment:
       - PORT=4003
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
-
-
     networks:
       - shared-network
 
