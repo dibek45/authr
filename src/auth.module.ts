@@ -5,8 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OpsTeam } from './entities/ops-team.entity';
-import { Role } from './entities/role.entity';
-import { Permission } from './entities/permission.entity';
+
 
 @Module({
   imports: [
@@ -40,7 +39,7 @@ import { Permission } from './entities/permission.entity';
       synchronize: true, // ⚠️ Solo para desarrollo, en producción usa migrations
       autoLoadEntities: true,
     }),
-    TypeOrmModule.forFeature([OpsTeam,Role,Permission])
+    TypeOrmModule.forFeature([OpsTeam])
   ],
   controllers: [AuthController], // ✅ Asegurar que el controlador está registrado
   providers: [AuthService],

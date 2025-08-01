@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { OpsTeam } from './entities/ops-team.entity';
-import { Role } from './entities/role.entity';
-import { Permission } from './entities/permission.entity';
+
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
@@ -12,8 +11,7 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,    
     @InjectRepository(OpsTeam) private readonly opsTeamRepository: Repository<OpsTeam>,
-    @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
-    @InjectRepository(Permission) private readonly permissionRepository: Repository<Permission>,
+
   ) {}
 
   async validateUser(email: string, password: string) {
