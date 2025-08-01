@@ -8,7 +8,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=rifas
     volumes:
       - ./pgdata-rifas:/var/lib/postgresql/data
     ports:
