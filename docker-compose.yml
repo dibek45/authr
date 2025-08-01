@@ -9,7 +9,8 @@ services:
       - "4003:4003"
     environment:
       - PORT=4003
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
+
     networks:
       - shared-network
 
