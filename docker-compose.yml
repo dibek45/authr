@@ -1,25 +1,40 @@
 version: "3.8"
 
 services:
-  db-rifas:
+  db:
     image: postgres:16
-    container_name: postgres-rifas
     restart: always
+    container_name: postgres
     environment:
-      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=rifas
-    ports:
-      - "5434:5432"
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
     volumes:
-      - ./pgdata-rifas:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
-      - rifas-network
+      - shared-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d rifas"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
       interval: 10s
       retries: 5
       timeout: 5s
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: nest-pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=david-6393@hotmail.com
+      - PGADMIN_DEFAULT_PASSWORD=Dandroid*1
+    ports:
+      - "5050:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - shared-network
 
   backend-rifas:
     build:
@@ -29,34 +44,56 @@ services:
     restart: always
     environment:
       - PORT=3000
-      - DATABASE_URL=postgresql://postgres:postgres@db-rifas:5432/rifas
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/rifas
+    volumes:
+      - ../backend-rifas/uploads:/app/uploads
     ports:
       - "3010:3000"
     depends_on:
-      db-rifas:
+      db:
         condition: service_healthy
-    volumes:
-      - ../backend-rifas/uploads:/app/uploads
     networks:
-      - rifas-network
+      - shared-network
 
-  caddy-rifas:
+  admin-rfs:
+    image: nginx:alpine
+    container_name: admin-rfs
+    restart: always
+    volumes:
+      - /home/dibek/Proyectos/adsrf/dist/adsrf/browser:/usr/share/nginx/html
+      - /home/dibek/Proyectos/adsrf/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8083:80"
+    networks:
+      - shared-network
+
+  rfs:
+    image: nginx:alpine
+    container_name: angular-rfs
+    restart: always
+    volumes:
+      - ../rfs/dist/mi-proyecto-angular/browser:/usr/share/nginx/html
+    ports:
+      - "8081:80"
+    networks:
+      - shared-network
+
+  caddy:
     image: caddy:alpine
-    container_name: caddy-rifas
+    container_name: caddy
     restart: unless-stopped
     ports:
-        - "8085:80"
-        - "4443:443"
+      - "80:80"
+      - "443:443"
     volumes:
-        - ../caddy/Caddyfile:/etc/caddy/Caddyfile
-        - ../caddy/data:/data
-        - ../caddy/config:/config
+      - ../caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ../caddy/data:/data
+      - ../caddy/config:/config
     depends_on:
-        - backend-rifas
+      - backend-rifas
     networks:
-        - rifas-network
-
+      - shared-network
 
 networks:
-  rifas-network:
+  shared-network:
     driver: bridge
