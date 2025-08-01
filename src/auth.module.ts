@@ -31,7 +31,7 @@ import { OpsTeam } from './entities/ops-team.entity';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'postgres-rifas', // 👈 CAMBIA esto (antes decía 'db')
-      port: 5434,
+      port: 5432,
       username: 'postgres',
       password: 'postgres',
       database: 'rifas',
