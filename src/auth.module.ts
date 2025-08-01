@@ -19,11 +19,11 @@ import { Permission } from './entities/permission.entity';
     }),
     ClientsModule.register([
       {
-        name: 'AUTH_SERVICE',
+        name: 'AUTH_SERVICE_RFS',
         transport: Transport.TCP,
         options: {
           host: '0.0.0.0', // 🔥 Debe coincidir con `main.ts`
-          port: 4001,
+          port: 4003,
         },
       },
       
