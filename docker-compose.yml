@@ -11,6 +11,7 @@ services:
       - PORT=4003
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
 
+
     networks:
       - shared-network
 
