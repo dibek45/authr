@@ -11,7 +11,8 @@ RUN apk add --no-cache netcat-openbsd
 COPY package*.json ./
 
 # Instalar dependencias de producción
-RUN npm install --omit=dev
+RUN npm install
+
 
 # Copiar el código fuente
 COPY . .
