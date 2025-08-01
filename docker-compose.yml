@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   auth-r:
     build:
@@ -14,8 +12,6 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
     networks:
       - shared-network
-    depends_on:
-      - db
 
 networks:
   shared-network:
