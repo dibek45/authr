@@ -39,7 +39,6 @@ export class AuthService {
     console.log('✅ Usuario autenticado:', user.email);
 
     // Obtener permisos del rol
-    const permissions = user.role?.permissions?.map(permission => permission.name) || [];
 
     // Genera un token JWT con rol y permisos
     return {
@@ -47,8 +46,7 @@ export class AuthService {
         id: user.id, 
         gymId:user.gym_id,
         email: user.email, 
-        role: user.role.name, 
-        permissions: permissions 
+        
       }),
     };
     
