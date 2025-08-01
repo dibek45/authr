@@ -1,20 +1,61 @@
 version: "3.8"
 
 services:
-  auth-r:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: auth-r
+  db-rifas:
+    image: postgres:16
+    container_name: postgres-rifas
     restart: always
-    ports:
-      - "4003:4003"
     environment:
-      - PORT=4003
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=rifas
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./pgdata-rifas:/var/lib/postgresql/data
     networks:
-      - shared-network
+      - rifas-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d rifas"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+
+  backend-rifas:
+    build:
+      context: ../backend-rifas
+      dockerfile: Dockerfile
+    container_name: backend-rifas
+    restart: always
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:postgres@db-rifas:5432/rifas
+    ports:
+      - "3010:3000"
+    depends_on:
+      db-rifas:
+        condition: service_healthy
+    volumes:
+      - ../backend-rifas/uploads:/app/uploads
+    networks:
+      - rifas-network
+
+  caddy-rifas:
+    image: caddy:alpine
+    container_name: caddy-rifas
+    restart: unless-stopped
+    ports:
+      - "8085:80"
+      - "4443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy-data:/data
+      - ./caddy-config:/config
+    depends_on:
+      - backend-rifas
+    networks:
+      - rifas-network
 
 networks:
-  shared-network:
-    external: true
+  rifas-network:
+    driver: bridge
