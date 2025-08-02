@@ -36,7 +36,7 @@ import { Sorteo } from './entities/sorteo.entity';
       username: 'postgres',
       password: 'postgres',
       database: 'rifas',
-      entities: [Usuario],  // 🔹 Asegúrate de importar tus entidades
+      entities: [Usuario,Sorteo],  // 🔹 Asegúrate de importar tus entidades
       synchronize: true, // ⚠️ Solo para desarrollo, en producción usa migrations
       autoLoadEntities: true,
     }),
