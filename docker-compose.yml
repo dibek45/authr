@@ -63,26 +63,6 @@ services:
       - "8081:80"
     networks:
       - shared-network  # 👈 CAMBIADO
-
-  auth-r:
-    hostname: auth-r
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: auth-r
-    restart: always
-    ports:
-      - "4003:4003"
-    environment:
-      - PORT=4003
-      - DATABASE_URL=postgresql://postgres:postgres@postgres-rifas:5432/rifas
-    networks:
-      - shared-network  # 👈 CAMBIADO
-    depends_on:
-      - db
-
-# ❌ Eliminamos caddy-rifas porque ya estás usando uno global
-
 networks:
   shared-network:   # 👈 USAMOS red compartida
     external: true
