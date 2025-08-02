@@ -52,4 +52,23 @@ export class AuthService {
   async findUserByEmail(email: string): Promise<Usuario | null> {
     return this.usuarioRepo.findOne({ where: { email } });
   }
+
+
+
+  async rehashPassword(email: string, newPassword: string): Promise<void> {
+  console.log('🔄 Rehasheando contraseña para:', email);
+
+  const user = await this.usuarioRepo.findOne({ where: { email } });
+
+  if (!user) {
+    throw new Error(`Usuario con email ${email} no encontrado`);
+  }
+
+  const newHash = await bcrypt.hash(newPassword, 10);
+  user.password = newHash;
+  await this.usuarioRepo.save(user);
+
+  console.log(`✅ Nueva contraseña hasheada y guardada para ${email}`);
+}
+
 }
