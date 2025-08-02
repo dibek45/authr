@@ -39,18 +39,22 @@ async validateUser(email: string, password: string) {
 
   console.log('✅ Usuario autenticado:', user.email);
 
-  // 🔍 Buscar sorteos donde el usuario es admin
-  const sorteos = await this.sorteoRepo.find({
-    where: { adminId: user.id },
-  });
 
-  const payload = {
-    id: user.id,
-    email: user.email,
-    rol: user.rol,
-    nombre: user.nombre,
-    sorteos, // 👉 agrega los sorteos si los necesitas en el frontend
-  };
+
+  // 👇 obtener los sorteos por usuario
+const sorteos = await this.sorteoRepo.find({
+  where: { adminId: user.id },
+  select: { id: true },
+});
+
+const payload = {
+  id: user.id,
+  email: user.email,
+  rol: user.rol,
+  nombre: user.nombre,
+  sorteos: sorteos.map(s => s.id),
+};
+
 
   return {
     access_token: this.jwtService.sign(payload),
