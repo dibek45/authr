@@ -70,7 +70,7 @@ export class Sorteo {
   mensajeWhatsappAnuncio?: string;
 
   // 👇 Aquí lo que querías
-  @Column()
+  @Column({ name: 'adminId' }) // 👈 Este nombre debe coincidir con la columna SQL
   adminId: number;
 
   @ManyToOne(() => Usuario, (usuario) => usuario.sorteos)
