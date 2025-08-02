@@ -1,19 +1,21 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PrismaClient, Usuario, Sorteo } from '@prisma/client';
+import { PrismaService } from './prisma/prisma.service';  // Inyectamos PrismaService
 import * as bcrypt from 'bcrypt';
+import { Usuario, Sorteo } from '@prisma/client';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
-  private prisma = new PrismaClient();
-
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly prisma: PrismaService,  // Prisma inyectado aquí
+  ) {}
 
   async validateUser(email: string, password: string) {
     console.log('📥 Llega a validar usuario:', email);
     console.log('🔑 Contraseña enviada desde el frontend:', password);
 
-    // Buscar el usuario por email
+    // Buscar el usuario por email usando Prisma
     const user: Usuario | null = await this.prisma.usuario.findUnique({
       where: { email },
     });
@@ -25,6 +27,7 @@ export class AuthService implements OnModuleInit {
 
     console.log('🧾 Contraseña en la base de datos (hash):', user.password);
 
+    // Comparar la contraseña
     const passwordMatch = await bcrypt.compare(password, user.password);
     console.log('🔍 ¿Coincide la contraseña?', passwordMatch);
 
@@ -51,30 +54,35 @@ export class AuthService implements OnModuleInit {
 
     return {
       access_token: this.jwtService.sign(payload),
-      sorteos, // También puedes devolverlos aquí si no los metes en el token
+      sorteos,  // También puedes devolverlos aquí si no los metes en el token
     };
   }
 
+  // Función para obtener usuario por email
   async findUserByEmail(email: string): Promise<Usuario | null> {
     return this.prisma.usuario.findUnique({ where: { email } });
   }
 
+  // Función para inicializar el módulo y crear el usuario "David"
   async onModuleInit() {
     await this.crearUsuarioDavid();
   }
 
+  // Crear usuario si no existe
   async crearUsuarioDavid() {
     const email = 'david@gmail.com';
     const password = '12345678';
 
+    // Verificar si el usuario ya existe
     const yaExiste = await this.prisma.usuario.findUnique({ where: { email } });
     if (yaExiste) {
       console.log('🟡 Ya existe el usuario:', yaExiste.email);
       return;
     }
 
+    // Crear el usuario con contraseña hasheada
     const hash = await bcrypt.hash(password, 10);
-    const nuevo = await this.prisma.usuario.create({
+    await this.prisma.usuario.create({
       data: {
         email,
         password: hash,
@@ -86,6 +94,7 @@ export class AuthService implements OnModuleInit {
     console.log('✅ Usuario david@gmail.com creado');
   }
 
+  // Rehashear la contraseña de un usuario
   async rehashPassword(email: string, newPassword: string): Promise<void> {
     console.log('🔄 Rehasheando contraseña para:', email);
 
@@ -95,6 +104,7 @@ export class AuthService implements OnModuleInit {
       throw new Error(`Usuario con email ${email} no encontrado`);
     }
 
+    // Hashear la nueva contraseña
     const newHash = await bcrypt.hash(newPassword, 10);
     await this.prisma.usuario.update({
       where: { email },
