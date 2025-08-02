@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
+import { Sorteo } from './entities/sorteo.entity';
 
 
 @Module({
@@ -39,7 +40,7 @@ import { Usuario } from './entities/usuario.entity';
       synchronize: true, // ⚠️ Solo para desarrollo, en producción usa migrations
       autoLoadEntities: true,
     }),
-    TypeOrmModule.forFeature([Usuario])
+    TypeOrmModule.forFeature([Usuario,Sorteo])
   ],
   controllers: [AuthController], // ✅ Asegurar que el controlador está registrado
   providers: [AuthService],
