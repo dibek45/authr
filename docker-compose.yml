@@ -66,6 +66,7 @@ services:
       - shared-network  # 👈 CAMBIADO
 
   auth-r:
+    hostname: auth-r
     build:
       context: .
       dockerfile: Dockerfile
