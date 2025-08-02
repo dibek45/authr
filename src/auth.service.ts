@@ -78,10 +78,11 @@ const payload = {
 async crearUsuarioDavid() {
   const email = 'david@gmail.com';
   const password = '12345678';
+  
 
   const yaExiste = await this.usuarioRepo.findOne({ where: { email } });
   if (yaExiste) {
-    console.log('🟡 Ya existe el usuario:', yaExiste.nombre, '-', yaExiste.email);
+    console.log('🟡 Ya existe el usuario:', yaExiste.email);
     return;
   }
 
@@ -94,9 +95,8 @@ async crearUsuarioDavid() {
   });
 
   await this.usuarioRepo.save(nuevo);
-  console.log(`✅ Usuario creado: ${nuevo.nombre} - ${nuevo.email}`);
+  console.log('✅ Usuario david@gmail.com creado');
 }
-
 
 
   async rehashPassword(email: string, newPassword: string): Promise<void> {
