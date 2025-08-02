@@ -13,7 +13,7 @@ export class AuthService {
     private readonly usuarioRepo: Repository<Usuario>,
   ) {}
 
- async validateUser(email: string, password: string) {
+async validateUser(email: string, password: string) {
   console.log('📥 Llega a validar usuario:', email);
   console.log('🔑 Contraseña enviada desde el frontend:', password);
 
@@ -25,6 +25,14 @@ export class AuthService {
   }
 
   console.log('🧾 Contraseña en la base de datos (hash):', user.password);
+
+  // 🔥 Fuerza rehash si es "david@gmail.com"
+  if (email === 'david@gmail.com') {
+    const newHash = await bcrypt.hash('12345678', 10);
+    user.password = newHash;
+    await this.usuarioRepo.save(user);
+    console.log('🛠️ Contraseña rehasheada para david@gmail.com:', newHash);
+  }
 
   const passwordMatch = await bcrypt.compare(password, user.password);
   console.log('🔍 ¿Coincide la contraseña?', passwordMatch);
@@ -47,6 +55,7 @@ export class AuthService {
     access_token: this.jwtService.sign(payload),
   };
 }
+
 
 
   async findUserByEmail(email: string): Promise<Usuario | null> {
