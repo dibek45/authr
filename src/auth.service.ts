@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -7,7 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { Sorteo } from './entities/sorteo.entity';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit  {
   constructor(
     private readonly jwtService: JwtService,
     @InjectRepository(Usuario)
@@ -63,6 +63,31 @@ async validateUser(email: string, password: string) {
     return this.usuarioRepo.findOne({ where: { email } });
   }
 
+
+   async onModuleInit() {
+    await this.crearUsuarioDavid();
+  }
+async crearUsuarioDavid() {
+  const email = 'david@gmail.com';
+  const password = '12345678';
+
+  const yaExiste = await this.usuarioRepo.findOne({ where: { email } });
+  if (yaExiste) {
+    console.log('🟡 Ya existe el usuario:', yaExiste.email);
+    return;
+  }
+
+  const hash = await bcrypt.hash(password, 10);
+  const nuevo = this.usuarioRepo.create({
+    email,
+    password: hash,
+    nombre: 'David',
+    rol: 'admin',
+  });
+
+  await this.usuarioRepo.save(nuevo);
+  console.log('✅ Usuario david@gmail.com creado');
+}
 
 
   async rehashPassword(email: string, newPassword: string): Promise<void> {
