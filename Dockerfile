@@ -21,7 +21,7 @@ COPY . .
 RUN npx nest build
 
 # Exponer el puerto 4001 para TCP
-EXPOSE 4001
+EXPOSE 4003
 
 # Comando para ejecutar el microservicio en producción
 CMD ["node", "dist/main.js"]
