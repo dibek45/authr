@@ -6,6 +6,8 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { Usuario } from './entities/user.entity';
 import { Sorteo } from './entities/sorteo.entity';
+import { CuentaBancaria } from './entities/cuenta-bancaria.entity';
+import { Boleto } from './entities/boleto.entity';
 
 @Module({
   imports: [
@@ -16,6 +18,12 @@ import { Sorteo } from './entities/sorteo.entity';
         algorithm: 'HS256',  // Asegúrate de que es correcto
         expiresIn: '1h',
       },
+    }),
+     TypeOrmModule.forRoot({
+      type: 'postgres',  // Asegúrate de usar PostgreSQL
+      url: process.env.DATABASE_URL,  // Usamos la URL de conexión desde las variables de entorno
+      entities: [Usuario, Sorteo, Boleto, CuentaBancaria],  // Agregamos todas las entidades
+      synchronize: true,  // Ten cuidado con esta opción en producción
     }),
     ClientsModule.register([
       {
