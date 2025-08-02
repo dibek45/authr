@@ -17,5 +17,9 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "generated/prisma/**/*.ts"  // Asegúrate de que esta línea esté presente
+  ]
 }

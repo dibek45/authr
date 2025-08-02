@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { PrismaService } from './prisma/prisma.service';
 // Importar Prisma en lugar de TypeORM
 
 @Module({
@@ -30,7 +29,6 @@ import { PrismaService } from './prisma/prisma.service';
   controllers: [AuthController], // ✅ Asegurar que el controlador está registrado
   providers: [
     AuthService,
-    PrismaService, // PrismaService como proveedor para interactuar con la base de datos
   ],
 })
 export class AuthModule {}
