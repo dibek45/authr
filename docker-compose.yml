@@ -21,20 +21,6 @@ services:
       retries: 5
       timeout: 5s
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin-rifas
-    restart: always
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=david-6393@hotmail.com
-      - PGADMIN_DEFAULT_PASSWORD=Dandroid*1
-    ports:
-      - "5055:80"
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - shared-network  # 👈 CAMBIADO
 
   backend-rifas:
     build:
@@ -47,6 +33,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgres-rifas:5432/rifas
     volumes:
       - ../backend-rifas/uploads:/app/uploads
+      - ../backend-rifas:/app
     ports:
       - "3010:3000"
     depends_on:
