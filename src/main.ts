@@ -12,6 +12,6 @@ async function bootstrap() {
   });
 
   await app.listen();
-  console.log(`✅ Auth Service corriendo en TCP en el puerto 4001`); // 🔥 Asegurar que este mensaje aparece
+  console.log(`✅ Auth Service corriendo en TCP en el puerto 4003`); // 🔥 Asegurar que este mensaje aparece
 }
 bootstrap();
