@@ -1,16 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';  // Importar TypeOrmModule
 import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-// Importar Prisma en lugar de TypeORM
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { Usuario } from './entities/user.entity';
+import { Sorteo } from './entities/sorteo.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([Usuario, Sorteo]),  // Registrar los repositorios en TypeORM
     JwtModule.register({
       secret: 'supersecretkey',
       signOptions: {
-        algorithm: 'HS256',  // ✅ Ensure this is correct
+        algorithm: 'HS256',  // Asegúrate de que es correcto
         expiresIn: '1h',
       },
     }),
@@ -19,16 +22,16 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         name: 'AUTH_SERVICE_RFS',
         transport: Transport.TCP,
         options: {
-          host: 'auth-r', // ✅ Usa el nombre del contenedor al que quieres conectarte
+          host: 'auth-r',  // Usa el nombre del contenedor al que te quieres conectar
           port: 4003,
         },
       },
     ]),
-    // No se necesita TypeOrmModule, eliminarlo
   ],
-  controllers: [AuthController], // ✅ Asegurar que el controlador está registrado
+  controllers: [AuthController], // Asegúrate de que el controlador esté registrado
   providers: [
     AuthService,
   ],
 })
 export class AuthModule {}
+
