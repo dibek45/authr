@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuario } from './entities/usuario.entity';
 import * as bcrypt from 'bcrypt';
+import { Sorteo } from './entities/sorteo.entity';
 
 @Injectable()
 export class AuthService {
@@ -11,9 +12,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
     @InjectRepository(Usuario)
     private readonly usuarioRepo: Repository<Usuario>,
+    @InjectRepository(Sorteo)
+private readonly sorteoRepo: Repository<Sorteo>,
   ) {}
 
- async validateUser(email: string, password: string) {
+async validateUser(email: string, password: string) {
   console.log('📥 Llega a validar usuario:', email);
   console.log('🔑 Contraseña enviada desde el frontend:', password);
 
@@ -36,15 +39,22 @@ export class AuthService {
 
   console.log('✅ Usuario autenticado:', user.email);
 
+  // 🔍 Buscar sorteos donde el usuario es admin
+  const sorteos = await this.sorteoRepo.find({
+    where: { adminId: user.id },
+  });
+
   const payload = {
     id: user.id,
     email: user.email,
     rol: user.rol,
     nombre: user.nombre,
+    sorteos, // 👉 agrega los sorteos si los necesitas en el frontend
   };
 
   return {
     access_token: this.jwtService.sign(payload),
+    sorteos, // 👈 También puedes devolverlos aquí si no los metes en el token
   };
 }
 

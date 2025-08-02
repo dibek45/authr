@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Sorteo } from './sorteo.entity';
 
-@Entity('Usuario') // ⚠️ con mayúscula, porque así está en la DB
+@Entity()
 export class Usuario {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,6 +15,9 @@ export class Usuario {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: 'admin' })
   rol: string;
+
+  @OneToMany(() => Sorteo, (sorteo) => sorteo.admin)
+  sorteos: Sorteo[];
 }
