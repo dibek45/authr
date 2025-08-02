@@ -17,6 +17,7 @@ private readonly sorteoRepo: Repository<Sorteo>,
   ) {}
 
 async validateUser(email: string, password: string) {
+
   console.log('📥 Llega a validar usuario:', email);
   console.log('🔑 Contraseña enviada desde el frontend:', password);
 
@@ -27,6 +28,8 @@ async validateUser(email: string, password: string) {
     return null;
   }
 
+  const sorteosRaw = await this.sorteoRepo.query('SELECT id FROM sorteo WHERE "adminId" = $1', [user.id]);
+console.log('🔎 raw sorteos:', sorteosRaw);
   console.log('🧾 Contraseña en la base de datos (hash):', user.password);
 
   const passwordMatch = await bcrypt.compare(password, user.password);
