@@ -37,7 +37,7 @@ import { Sorteo } from './entities/sorteo.entity';
       password: 'postgres',
       database: 'rifas',
       entities: [Usuario,Sorteo],  // 🔹 Asegúrate de importar tus entidades
-      synchronize: true, // ⚠️ Solo para desarrollo, en producción usa migrations
+      synchronize: false, // ⚠️ Solo para desarrollo, en producción usa migrations
       autoLoadEntities: true,
     }),
     TypeOrmModule.forFeature([Usuario,Sorteo])
