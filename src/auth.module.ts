@@ -21,7 +21,7 @@ import { Usuario } from './entities/usuario.entity';
         name: 'AUTH_SERVICE_RFS',
         transport: Transport.TCP,
         options: {
-          host: '0.0.0.0', // 🔥 Debe coincidir con `main.ts`
+      host: 'auth-r', // ✅ Usa el nombre del contenedor al que quieres conectarte
           port: 4003,
         },
       },
