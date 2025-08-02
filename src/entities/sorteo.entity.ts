@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Usuario } from './usuario.entity';
 
-@Entity()
+@Entity('sorteo') // <– minúscula, SIN comillas ni mayúscula
 export class Sorteo {
   @PrimaryGeneratedColumn()
   id: number;

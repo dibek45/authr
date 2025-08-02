@@ -40,6 +40,7 @@ async validateUser(email: string, password: string) {
   console.log('✅ Usuario autenticado:', user.email);
 
 
+console.log('🧠 user.id:', user.id, typeof user.id);
 
   // 👇 obtener los sorteos por usuario
 const sorteos = await this.sorteoRepo.find({
