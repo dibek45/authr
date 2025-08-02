@@ -1,35 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Repository } from 'typeorm';
-import { OpsTeam } from './entities/ops-team.entity';
-
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Usuario } from './entities/usuario.entity'; // asegúrate de que el path sea correcto
 
 @Injectable()
 export class AuthService {
- 
   constructor(
-    private readonly jwtService: JwtService,    
-    @InjectRepository(OpsTeam) private readonly opsTeamRepository: Repository<OpsTeam>,
-
+    private readonly jwtService: JwtService,
+    @InjectRepository(Usuario)
+    private readonly usuarioRepo: Repository<Usuario>,
   ) {}
 
   async validateUser(email: string, password: string) {
     console.log('📥 Llega a validar usuario:', email);
-    
-    const user2=await this.opsTeamRepository.find( 
-     ); 
-    console.log(user2)
-    const user = await this.opsTeamRepository.findOne({ 
-      where: { email }, 
-    }); 
+
+    const user = await this.usuarioRepo.findOne({ where: { email } });
 
     if (!user) {
       console.log('❌ Usuario no encontrado:', email);
       return null;
     }
 
-    // Aquí podrías verificar la contraseña con bcrypt
     if (user.password !== password) {
       console.log('❌ Contraseña incorrecta para:', email);
       return null;
@@ -37,19 +29,17 @@ export class AuthService {
 
     console.log('✅ Usuario autenticado:', user.email);
 
-    
     return {
-      access_token: this.jwtService.sign({ 
-        id: user.id, 
-        gymId:user.gym_id,
-        email: user.email, 
-        
+      access_token: this.jwtService.sign({
+        id: user.id,
+        email: user.email,
+        rol: user.rol,
+        nombre: user.nombre,
       }),
     };
-    
   }
 
-  async findUserByEmail(email: string): Promise<OpsTeam | null> {
-    return this.opsTeamRepository.findOne({ where: { email }});
+  async findUserByEmail(email: string): Promise<Usuario | null> {
+    return this.usuarioRepo.findOne({ where: { email } });
   }
 }

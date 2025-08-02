@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { OpsTeam } from './entities/ops-team.entity';
+import { Usuario } from './entities/usuario.entity';
 
 
 @Module({
@@ -35,11 +35,11 @@ import { OpsTeam } from './entities/ops-team.entity';
       username: 'postgres',
       password: 'postgres',
       database: 'rifas',
-      entities: [OpsTeam],  // 🔹 Asegúrate de importar tus entidades
+      entities: [Usuario],  // 🔹 Asegúrate de importar tus entidades
       synchronize: true, // ⚠️ Solo para desarrollo, en producción usa migrations
       autoLoadEntities: true,
     }),
-    TypeOrmModule.forFeature([OpsTeam])
+    TypeOrmModule.forFeature([Usuario])
   ],
   controllers: [AuthController], // ✅ Asegurar que el controlador está registrado
   providers: [AuthService],

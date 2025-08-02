@@ -10,7 +10,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=rifas
     volumes:
-      - ./pgdata-rifas:/var/lib/postgresql/data
+      - ../api/pgdata:/var/lib/postgresql/data
     ports:
       - "5434:5432"
     networks:
