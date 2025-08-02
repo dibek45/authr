@@ -39,6 +39,8 @@ import { Sorteo } from './entities/sorteo.entity';
       entities: [Usuario,Sorteo],  // 🔹 Asegúrate de importar tus entidades
       synchronize: false, // ⚠️ Solo para desarrollo, en producción usa migrations
       autoLoadEntities: true,
+        logging: true, // Activa el logging para ver todas las consultas SQL
+
     }),
     TypeOrmModule.forFeature([Usuario,Sorteo])
   ],
