@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Usuario } from './entities/usuario.entity';
+import { Usuario } from './entities/usuario.entity'; // asegúrate de que el path sea correcto
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -23,23 +23,20 @@ export class AuthService {
       return null;
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
+    if (user.password !== password) {
       console.log('❌ Contraseña incorrecta para:', email);
       return null;
     }
 
     console.log('✅ Usuario autenticado:', user.email);
 
-    const payload = {
-      id: user.id,
-      email: user.email,
-      rol: user.rol,
-      nombre: user.nombre,
-    };
-
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign({
+        id: user.id,
+        email: user.email,
+        rol: user.rol,
+        nombre: user.nombre,
+      }),
     };
   }
 
