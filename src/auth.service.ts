@@ -28,8 +28,6 @@ async validateUser(email: string, password: string) {
     return null;
   }
 
-  const sorteosRaw = await this.sorteoRepo.query('SELECT id FROM sorteo WHERE "adminId" = $1', [user.id]);
-console.log('🔎 raw sorteos:', sorteosRaw);
   console.log('🧾 Contraseña en la base de datos (hash):', user.password);
 
   const passwordMatch = await bcrypt.compare(password, user.password);
@@ -78,7 +76,6 @@ const payload = {
 async crearUsuarioDavid() {
   const email = 'david@gmail.com';
   const password = '12345678';
-  
 
   const yaExiste = await this.usuarioRepo.findOne({ where: { email } });
   if (yaExiste) {
