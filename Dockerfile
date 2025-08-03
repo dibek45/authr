@@ -18,7 +18,8 @@ RUN npm install
 COPY . .
 
 # Compilar la aplicación con NestJS
-RUN npx nest build
+RUN npm run build
+
 
 # Exponer el puerto 4001 para TCP
 EXPOSE 4003
