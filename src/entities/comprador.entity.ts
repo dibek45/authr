@@ -15,8 +15,7 @@ export class Comprador {
   @Column({ nullable: true })
   telefono: string;
 
-  @OneToMany(() => Boleto, boleto => boleto.comprador)
-  boletos: Boleto[];
+
 
  @Column({ name: 'creadoen' })
 creadoEn: Date;

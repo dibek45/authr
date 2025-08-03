@@ -15,8 +15,6 @@ import { Boleto } from './boleto.entity';
     @Column({ default: 'vendedor' })
     rol: string;
 
-    @OneToMany(() => Boleto, boleto => boleto.vendedor)
-    boletos: Boleto[];
     
 @Column({ name: 'createdat', default: () => 'CURRENT_TIMESTAMP' })
 createdAt: Date;
