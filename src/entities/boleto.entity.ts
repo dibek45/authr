@@ -1,8 +1,5 @@
-
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Sorteo } from './sorteo.entity';
-import { Comprador } from './comprador.entity';
-import { Vendedor } from './vendedor.entity';
 
 @Entity('boleto')  // 👈 tabla en minúsculas
 export class Boleto {
@@ -18,21 +15,19 @@ export class Boleto {
   @Column({ default: 'disponible' })
   estado: string;
 
-  @Column({ name: 'metodopago', nullable: true })  // 👈 así le dices el nombre real de la columna
-metodoPago?: string;
-@Column({ name: 'fechacompra', nullable: true, type: 'timestamp' })
-fechaCompra?: Date;
+  @Column({ name: 'metodopago', nullable: true })
+  metodoPago?: string;
 
+  @Column({ name: 'fechacompra', nullable: true, type: 'timestamp' })
+  fechaCompra?: Date;
+
+  @Column({ name: 'compradorid', nullable: true })
+  compradorId?: number;
+
+  @Column({ name: 'vendedorid', nullable: true })
+  vendedorId?: number;
 
   @ManyToOne(() => Sorteo, sorteo => sorteo.boletos)
-  @JoinColumn({ name: 'sorteoId' }) // 👈 CLAVE
+  @JoinColumn({ name: 'sorteoid' }) // 👈 Clave foránea permitida
   sorteo: Sorteo;
-
-  @ManyToOne(() => Comprador, comprador => comprador.boletos, { nullable: true })
-  @JoinColumn({ name: 'compradorId' }) // 👈 CLAVE
-  comprador?: Comprador;
-
-  @ManyToOne(() => Vendedor, vendedor => vendedor.boletos, { nullable: true })
-  @JoinColumn({ name: 'vendedorId' }) // 👈 CLAVE
-  vendedor?: Vendedor;
 }
