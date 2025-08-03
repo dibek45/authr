@@ -1,5 +1,5 @@
-  import { Boleto } from 'src/boleto/entities/boleto.entity';
   import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Boleto } from './boleto.entity';
 
 @Entity('Vendedor') // 👈 ¡ojo, con mayúscula!
   export class Vendedor {
