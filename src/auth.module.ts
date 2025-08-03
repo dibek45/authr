@@ -9,6 +9,7 @@ import { CuentaBancaria } from './entities/cuenta-bancaria.entity';
 import { Sorteo } from './entities/sorteo.entity';
 import { Boleto } from './entities/boleto.entity';
 import { Comprador } from './entities/comprador.entity';
+import { Vendedor } from './entities/vendedor.entity';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { Comprador } from './entities/comprador.entity';
      TypeOrmModule.forRoot({
       type: 'postgres',  // Asegúrate de usar PostgreSQL
       url: process.env.DATABASE_URL,  // Usamos la URL de conexión desde las variables de entorno
-  entities: [Usuario, Sorteo, Boleto, CuentaBancaria, Comprador], // ✅ Agrega Comprador
+  entities: [Usuario, Sorteo, Boleto, CuentaBancaria, Comprador,Vendedor], // ✅ Agrega Comprador
       synchronize: true,  // Ten cuidado con esta opción en producción
     }),
     ClientsModule.register([
