@@ -5,9 +5,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { Usuario } from './entities/user.entity';
-import { Sorteo } from './entities/sorteo.entity';
 import { CuentaBancaria } from './entities/cuenta-bancaria.entity';
+import { Sorteo } from './entities/sorteo.entity';
 import { Boleto } from './entities/boleto.entity';
+import { Comprador } from './entities/comprador.entity';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { Boleto } from './entities/boleto.entity';
      TypeOrmModule.forRoot({
       type: 'postgres',  // Asegúrate de usar PostgreSQL
       url: process.env.DATABASE_URL,  // Usamos la URL de conexión desde las variables de entorno
-      entities: [Usuario, Sorteo, Boleto, CuentaBancaria],  // Agregamos todas las entidades
+  entities: [Usuario, Sorteo, Boleto, CuentaBancaria, Comprador], // ✅ Agrega Comprador
       synchronize: true,  // Ten cuidado con esta opción en producción
     }),
     ClientsModule.register([
