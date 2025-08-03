@@ -1,7 +1,7 @@
 
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Sorteo } from './sorteo.entity';
 import { CuentaBancaria } from './cuenta-bancaria.entity';
+import { Sorteo } from './sorteo.entity';
 
 @Entity()
 export class Usuario {
@@ -26,6 +26,11 @@ export class Usuario {
 
   
   // Relación uno a muchos (un sorteo puede tener muchas cuentas bancarias)
-  @OneToMany(() => CuentaBancaria, cuentaBancaria => cuentaBancaria.sorteo)
-  cuentasBancarias: CuentaBancaria[];
+@OneToMany(() => CuentaBancaria, cuentaBancaria => cuentaBancaria.usuario)
+cuentasBancarias: CuentaBancaria[];
+
+
+  
+  @OneToMany(() => Sorteo, sorteo => sorteo.admin)
+  sorteosAdmin: Sorteo[];
 }

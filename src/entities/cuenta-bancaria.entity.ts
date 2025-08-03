@@ -1,7 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Usuario } from './user.entity';
-import { Sorteo } from './sorteo.entity';
-
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Usuario } from './user.entity';  // Relación con Usuario
+import { Sorteo } from './sorteo.entity';  // Relación con Sorteo
 
 @Entity()
 export class CuentaBancaria {
@@ -25,11 +24,8 @@ export class CuentaBancaria {
   usuarioId: number;  // Clave foránea que hace referencia a Usuario
 
   // Relación muchos a uno con Sorteo
-  @ManyToOne(() => Sorteo, sorteo => sorteo.cuentasBancarias)
-  sorteo: Sorteo;
-
-  @Column()
-  sorteoId: number;  // Clave foránea que hace referencia a Sorteo
+@OneToMany(() => Sorteo, sorteo => sorteo.cuentaBancaria)
+sorteos: Sorteo[];
 
 
 
