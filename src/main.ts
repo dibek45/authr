@@ -10,6 +10,7 @@ async function bootstrap() {
       port: 4003,
     },
   });
+console.log('📦 DB URL usada:', process.env.DATABASE_URL);
 
   await app.listen();
   console.log(`✅ Auth Service corriendo en TCP en el puerto 4003`); // 🔥 Asegurar que este mensaje aparece
