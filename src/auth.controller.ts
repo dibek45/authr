@@ -25,6 +25,7 @@ export class AuthController {
   
 @MessagePattern('auth.create-dog')
 async crearUsuario(@Payload() dto: CreateUserDto) {
+  console.log('🐾 DTO recibido en el micro:', dto);
   return this.authService.crearUsuario(dto);
 }
 
