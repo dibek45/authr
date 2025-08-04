@@ -23,10 +23,10 @@ export class AuthController {
   }
 
   
-  @Post('crear-usuario')
-  async crearUsuario(@Body() dto: CreateUserDto) {
-    return this.authService.crearUsuario(dto);
-  }
+@MessagePattern('auth.create-dog')
+async crearUsuario(@Payload() dto: CreateUserDto) {
+  return this.authService.crearUsuario(dto);
+}
 
 
   

@@ -17,7 +17,7 @@ import { Vendedor } from './entities/vendedor.entity';
     JwtModule.register({
       secret: 'supersecretkey',
       signOptions: {
-        algorithm: 'HS256',  // Asegúrate de que es correcto
+        algorithm: 'HS256',  
         expiresIn: '1h',
       },
     }),
@@ -32,13 +32,13 @@ import { Vendedor } from './entities/vendedor.entity';
         name: 'AUTH_SERVICE_RFS',
         transport: Transport.TCP,
         options: {
-          host: 'auth-r',  // Usa el nombre del contenedor al que te quieres conectar
+          host: 'auth-r',  
           port: 4003,
         },
       },
     ]),
   ],
-  controllers: [AuthController], // Asegúrate de que el controlador esté registrado
+  controllers: [AuthController],
   providers: [
     AuthService,
   ],
