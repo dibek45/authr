@@ -6,13 +6,13 @@ export class Boleto {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ name: 'numero' })
   numero: number;
 
-  @Column('float')
+  @Column({ name: 'precio', type: 'float' })
   precio: number;
 
-  @Column({ default: 'disponible' })
+  @Column({ name: 'estado', default: 'disponible' })
   estado: string;
 
   @Column({ name: 'metodopago', nullable: true })
@@ -21,6 +21,9 @@ export class Boleto {
   @Column({ name: 'fechacompra', nullable: true, type: 'timestamp' })
   fechaCompra?: Date;
 
+  @Column({ name: 'sorteoid' })
+  sorteoId: number;
+
   @Column({ name: 'compradorid', nullable: true })
   compradorId?: number;
 
@@ -28,6 +31,7 @@ export class Boleto {
   vendedorId?: number;
 
   @ManyToOne(() => Sorteo, sorteo => sorteo.boletos)
-  @JoinColumn({ name: 'sorteoid' }) // 👈 Clave foránea permitida
+  @JoinColumn({ name: 'sorteoid' })
   sorteo: Sorteo;
+
 }
