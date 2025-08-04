@@ -29,5 +29,10 @@ async crearUsuario(@Payload() dto: CreateUserDto) {
 }
 
 
-  
+  @MessagePattern('auth.test-nuevo')
+async testNuevo(@Payload() data: { nombre: string }) {
+  console.log('👋 Llega al microservicio con:', data);
+  return { message: `Hola ${data.nombre}, desde el micro!` };
+}
+
 }
