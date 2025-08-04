@@ -5,9 +5,10 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Sorteo } from './entities/sorteo.entity';    // Correct import path
 import { Usuario } from './entities/user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
-export class AuthService implements OnModuleInit {
+export class AuthService  {
   private readonly logger = new Logger(AuthService.name);
 
   constructor(
@@ -63,34 +64,8 @@ export class AuthService implements OnModuleInit {
     return this.usuarioRepository.findOne({ where: { email } });
   }
 
-  // Initialize the module and create a default "David" user
-  async onModuleInit() {
-    await this.crearUsuarioDavid();
-  }
 
-  // Create the user "David" if it doesn't exist
-  async crearUsuarioDavid() {
-    const email = 'david@gmail.com';
-    const password = '12345678';
 
-    // Verify if the user already exists
-    const yaExiste = await this.usuarioRepository.findOne({ where: { email } });
-    if (yaExiste) {
-      this.logger.warn(`🟡 Ya existe el usuario: ${yaExiste.email}`);
-      return;
-    }
-
-    // Create the user with a hashed password
-    const hash = await bcrypt.hash(password, 10);
-    await this.usuarioRepository.save({
-      email,
-      password: hash,
-      nombre: 'David',
-      rol: 'admin',
-    });
-
-    this.logger.log('✅ Usuario david@gmail.com creado');
-  }
 
   // Rehash the password of a user
   async rehashPassword(email: string, newPassword: string): Promise<void> {
@@ -108,4 +83,29 @@ export class AuthService implements OnModuleInit {
 
     this.logger.log(`✅ Nueva contraseña hasheada y guardada para ${email}`);
   }
+
+
+
+  async crearUsuario(dto: CreateUserDto) {
+    const { email, password, nombre, rol } = dto;
+
+    const yaExiste = await this.usuarioRepository.findOne({ where: { email } });
+    if (yaExiste) {
+      this.logger.warn(`🟡 Ya existe el usuario: ${yaExiste.email}`);
+      return { message: '⚠️ Ya existe el usuario' };
+    }
+
+    const hash = await bcrypt.hash(password, 10);
+
+    await this.usuarioRepository.save({
+      email,
+      password: hash,
+      nombre,
+      rol,
+    });
+
+    this.logger.log(`✅ Usuario ${email} creado`);
+    return { message: '✅ Usuario creado', email };
+  }
+
 }

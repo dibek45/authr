@@ -1,6 +1,7 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller()
 export class AuthController {
@@ -20,6 +21,13 @@ export class AuthController {
     console.log('✅ Token generado:', tokenObject.access_token);
     return tokenObject.access_token; // ✅ Return token as a string
   }
+
+  
+  @Post('crear-usuario')
+  async crearUsuario(@Body() dto: CreateUserDto) {
+    return this.authService.crearUsuario(dto);
+  }
+
 
   
 }
