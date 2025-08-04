@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { AuthModule } from './auth.module';
+  import * as dotenv from 'dotenv';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(AuthModule, {
@@ -10,6 +11,10 @@ async function bootstrap() {
       port: 4003,
     },
   });
+
+
+dotenv.config(); // 👈 carga las variables desde .env
+
 console.log('📦 DB URL usada:', process.env.DATABASE_URL);
 console.log('📦 DB URL usada:', process.env.DATABASE_URL);
 console.log('📦 DB URL usada:', process.env.DATABASE_URL);
